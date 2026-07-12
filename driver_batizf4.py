@@ -55,7 +55,9 @@ def main():  # not testable
 
 
         #selection of classes for players
-        print("Is Player 1 a Warrior, Archer, or a Mugwump? Player 1 is human controlled.")
+        print("Enter name for Player 1")
+        player_1_name = input()
+        print(f"Is {player_1_name} a Warrior, Archer, or a Mugwump? Player 1 is human controlled.")
         player_1_selection = input()
         if player_1_selection == "Warrior":
             player_1 = Warrior()
@@ -77,12 +79,12 @@ def main():  # not testable
 
         # while neither combatant has lost all of their hit points, report status and battle!
         while victor == "none":
-            report(player_1, player_2)
-            victor = battle(player_1, player_2)
+            report(player_1, player_2, player_1_name, player_1_selection, player_2_selection)
+            victor = battle(player_1, player_2, player_1_name, player_2_selection)
 
         # declare the winner
             if (victor != "none"): # one of them has won
-                report(player_1, player_2)
+                report(player_1, player_2, player_1_name, player_1_selection, player_2_selection)
                 victory(victor, player_1, player_2)
                 # ask to play again
                 keep_playing = playAgain()
@@ -115,14 +117,14 @@ def intro():  # not testable
        @return The name of the victor, or "none", if the battle is still raging on
      """
 
-def battle(player_1, player_2):  # not testable?
+def battle(player_1, player_2, player_1_name, player_2_selection):  # not testable?
     # determine who attacks first (Roll! For! Initiative!) and store the result
     cur_inititive = initiative() # this a 1 or 2
     # attack code
     # If the Warrior attacks first
     if (cur_inititive == 1):
         # Player 1 attacks and assigns the resulting damage to Player 2
-        print("Player 1 attacks first!")
+        print(f"{player_1_name} attacks first!")
         if isinstance(player_1, GameProt):
             if isinstance(player_1, Warrior):
                 cur_attack = attackChoiceWarrior()
@@ -138,7 +140,7 @@ def battle(player_1, player_2):  # not testable?
         if (player_2.hitPoints <= 0):
             return player_1
         # If not, Mugwump attacks!
-        print("How is Player 2 attacking?")
+        print(f"How is {player_2_selection} attacking?")
         attack_type = 0
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
@@ -183,9 +185,9 @@ def battle(player_1, player_2):  # not testable?
         if (player_1.hitPoints == 0):
             return player_2  #mugwump wins!
     else: # Player_2 attacks first!
-        print("Player 2 attacks first!")
+        print(f"{player_2_selection} attacks first!")
         # player_2 attacks and assigns the resulting damage to the player_1
-        print("How is Player 2 attacking?")
+        print(f"How is {player_2_selection} attacking?")
         attack_type = 0
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
@@ -256,9 +258,9 @@ def battle(player_1, player_2):  # not testable?
    @param warrior The Warrior of Light!
    @param mugwump The Evil Mugwump!
  """
-def report(player_1, player_2):  # not testable
-    print(f"Player 1 HP: {player_1.hitPoints}")
-    print(f"Player 2 HP: {player_2.hitPoints}")
+def report(player_1, player_2, player_1_name, player_1_selection, player_2_selection):  # not testable
+    print(f"{player_1_name} ({player_1_selection}) HP: {player_1.hitPoints}")
+    print(f"{player_2_selection} HP: {player_2.hitPoints}")
 
 
 
