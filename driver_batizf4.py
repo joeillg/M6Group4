@@ -14,6 +14,7 @@ from warrior import Warrior
 from archer import Archer
 from die import Die
 import random
+import csv
 
 """
  BattleSim Driver for Battle Simulator 3000
@@ -87,6 +88,10 @@ def main():  # not testable
                 report(player_1, player_2, player_1_name, player_1_selection, player_2_selection)
                 victory(victor, player_1, player_2)
                 # ask to play again
+                print(f"Do you want to save {player_1_name} a {player_1_selection}? y/n")
+                saveChar = input()
+                if saveChar == "y":
+                    saveCharacter(player_1, player_1_name, player_1_selection)
                 keep_playing = playAgain()
 
 
@@ -360,6 +365,13 @@ def playAgain() -> bool:  # this should be testable, see https://stackoverflow.c
     if (str.lower(choice) == "y" or str.lower(choice)  == "yes"):
         return True
     return False
+
+def saveCharacter(player_1, player_1_name, player_1_selection):
+    with open('characters.csv', 'w', newline='') as csvfile:
+        maxHitPoints = player_1.getMaxHitPoints()
+        charWriter = csv.writer(csvfile, delimiter=' ',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        charWriter.writerow([player_1_name] + [player_1_selection] + [str(maxHitPoints)])
 
 if __name__ == "__main__":
     main()

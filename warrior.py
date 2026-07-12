@@ -65,3 +65,6 @@ class Warrior:
             self.hitPoints -= amount
         else:
             self.hitPoints = 0
+
+    def getMaxHitPoints(self):
+        return self.maxHitPoints

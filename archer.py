@@ -93,3 +93,6 @@ class Archer:
                 self.hitPoints = self.maxHitPoints
         else:
             self.hitPoints = 0
+
+    def getMaxHitPoints(self):
+        return self.maxHitPoints
