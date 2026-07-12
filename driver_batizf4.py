@@ -59,19 +59,19 @@ def main():  # not testable
         player_1_name = input()
         print(f"Is {player_1_name} a Warrior, Archer, or a Mugwump? Player 1 is human controlled.")
         player_1_selection = input()
-        if player_1_selection == "Warrior":
+        if str.lower(player_1_selection) == "warrior":
             player_1 = Warrior()
-        elif player_1_selection == "Mugwump":
+        elif str.lower(player_1_selection) == "mugwump":
             player_1 = Mugwump()
-        elif player_1_selection == "Archer":
+        elif str.lower(player_1_selection) == "archer":
             player_1 = Archer()
         print("Is Player 2 a Warrior, Archer, or a Mugwump? Player 2 is AI controlled.")
         player_2_selection = input()
-        if player_2_selection == "Warrior":
+        if str.lower(player_2_selection) == "warrior":
             player_2 = Warrior()
-        elif player_2_selection == "Mugwump":
+        elif str.lower(player_2_selection) == "mugwump":
             player_2 = Mugwump()
-        elif player_2_selection == "Archer":
+        elif str.lower(player_2_selection) == "archer":
             player_2 = Archer()
 
 
@@ -144,17 +144,15 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         attack_type = 0
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
-                attack =  random.randint(1,25)
+                attack =  random.randint(1,20)
                 if (attack <= 12):  # 60%
                     # Trusty Sword
                     attack_type = 1
-                elif (attack <= 17):  # 25%
+                else:  # 25%
                     # Shield of Light
                     attack_type = 2
-                else:
-                    attack_type = 3
             if isinstance(player_2, Mugwump):
-                attack =  random.randint(1,25)
+                attack =  random.randint(1,20)
                 if (attack <= 12):  # 60%
                     # Razor-Sharp Claws
                     attack_type = 1
@@ -165,16 +163,19 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                     # heal 15 %
                     attack_type = 3
             if isinstance(player_2, Archer):
-                attack =  random.randint(1,25)
-                if (attack <= 12):  # 60%
-                    # Razor-Sharp Claws
+                attack =  random.randint(1,20)
+                if (attack <= 12):  # 48%
+                    # Arrow
                     attack_type = 1
-                elif (attack <= 17):  # 25%
-                    # Their Fangs of Death
+                elif (attack <= 17):  # 20%
+                    # Knife
                     attack_type = 2
-                else:
-                    # heal 15 %
+                elif (attack <= 22): #20%
+                    #Focus
                     attack_type = 3
+                else:
+                    # heal 12 %
+                    attack_type = 4
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
         if(damage > 0):
@@ -191,17 +192,15 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         attack_type = 0
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
-                attack = random.randint(1, 25)
+                attack = random.randint(1, 20)
                 if (attack <= 12):  # 60%
                     # Trusty Sword
                     attack_type = 1
-                elif (attack <= 17):  # 25%
+                else:  # 25%
                     # Shield of Light
                     attack_type = 2
-                else:
-                    attack_type = 3
             if isinstance(player_2, Mugwump):
-                attack = random.randint(1, 25)
+                attack = random.randint(1, 20)
                 if (attack <= 12):  # 60%
                     # Razor-Sharp Claws
                     attack_type = 1
@@ -213,15 +212,18 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                     attack_type = 3
             if isinstance(player_2, Archer):
                 attack = random.randint(1, 25)
-                if (attack <= 12):  # 60%
-                    # Razor-Sharp Claws
+                if (attack <= 12):  # 48%
+                    # Arrow
                     attack_type = 1
-                elif (attack <= 17):  # 25%
-                    # Their Fangs of Death
+                elif (attack <= 17):  # 20%
+                    # Knife
                     attack_type = 2
-                else:
-                    # heal 15 %
+                elif (attack <= 22): # 20%
+                    # Focus
                     attack_type = 3
+                else:
+                    # heal 12 %
+                    attack_type = 4
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
         if (damage > 0):
