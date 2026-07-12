@@ -41,15 +41,15 @@ class Warrior:
         if (attack_type == 1): # trusty sword
             if (self.d20.roll() >= 12):  # do we hit?
                 damage = self.d8.roll() + self.d8.roll()  # 2d8 for damage
-                print(f"You hit for {damage}")
+                print(f"Warrior hit for {damage}")
             else:
-                print("You miss!")
+                print("Warrior misses!")
         else:  # (attack_type == 2): # shield of light
             if (self.d20.roll() >= 6): # do we hit
                 damage = self.d4.roll()  # 1d4 damage
-                print(f"You hit for {damage}")
+                print(f"Warrior hit for {damage}")
             else:
-                print("You miss")
+                print("Warrior misses")
 
 
         # return the damage

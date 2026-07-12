@@ -294,9 +294,9 @@ def attackChoiceArcher() -> int: # this should be testable, see https://stackove
 
     choice = int(input( "How would you like to attack?\n"
                         "1. Your Bow and Arrow\n"
-                        "2. Your Knife\n"
-                        "3. A Potion\n"
-                        "4. Focus (Next Attack can't miss)\n"
+                        "2. Your Knife\n"  
+                        "3. Focus (Next Attack can't miss)\n"
+                        "4. A Potion\n"
                         "Enter choice: "))
     return choice
 

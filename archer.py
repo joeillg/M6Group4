@@ -2,8 +2,8 @@
         Course: CSC 5120 301
         Summer 2026
         Battle Simulator 3000
-        Name: Fhernam Batiz
-        Created: 6/30/2026
+        Name: Joe Illg
+        Created: 7/11/2026
 """
 
 from die import Die
@@ -51,7 +51,7 @@ class Archer:
                     print(f"Archer hits with knife for {damage}")
                 else:
                     print(f"Archer misses with knife")
-            elif (attack_type == 4):
+            elif (attack_type == 3):
                 self.focus = True
                 damage = 0
                 print(f"Archer is focusing")
@@ -68,7 +68,7 @@ class Archer:
                 damage = self.d6.roll() + self.d6.roll() + self.d6.roll()  # 3d6
                 print(f"Archer hits with knife for {damage}")
                 self.focus = False
-            elif (attack_type == 4):
+            elif (attack_type == 3):
                 self.focus = True
                 damage = 0
                 print(f"Archer is focusing")
