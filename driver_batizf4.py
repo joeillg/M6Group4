@@ -2,8 +2,8 @@
     Course: CSC 5120 301
     Summer 2026
     Battle Simulator 3000
-    Name: Fhernam Batiz
-    Created: 6/30/2026
+    Name: Fhernam Batiz, Joe Illg
+    Created: 7/11/2026
 """
 
 #parametrization example in test.warrior
@@ -11,6 +11,7 @@
 from typing import Protocol, runtime_checkable
 from mugwump import Mugwump
 from warrior import Warrior
+from archer import Archer
 from die import Die
 import random
 
@@ -54,18 +55,22 @@ def main():  # not testable
 
 
         #selection of classes for players
-        print("Is Player 1 a Warrior or a Mugwump? Player 1 is human controlled.")
+        print("Is Player 1 a Warrior, Archer, or a Mugwump? Player 1 is human controlled.")
         player_1_selection = input()
         if player_1_selection == "Warrior":
             player_1 = Warrior()
-        if player_1_selection == "Mugwump":
+        elif player_1_selection == "Mugwump":
             player_1 = Mugwump()
-        print("Is Player 2 a Warrior or a Mugwump? Player 2 is AI controlled.")
+        elif player_1_selection == "Archer":
+            player_1 = Archer()
+        print("Is Player 2 a Warrior, Archer, or a Mugwump? Player 2 is AI controlled.")
         player_2_selection = input()
         if player_2_selection == "Warrior":
             player_2 = Warrior()
-        if player_2_selection == "Mugwump":
+        elif player_2_selection == "Mugwump":
             player_2 = Mugwump()
+        elif player_2_selection == "Archer":
+            player_2 = Archer()
 
 
         victor = "none"
@@ -125,6 +130,9 @@ def battle(player_1, player_2):  # not testable?
             if isinstance(player_1, Mugwump):
                 cur_attack = attackChoiceMugwump()
                 damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
+            if isinstance(player_1, Archer):
+                cur_attack = attackChoiceArcher()
+                damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
         player_2.takeDamage(damage) # apply damage to mugwump
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
@@ -134,7 +142,7 @@ def battle(player_1, player_2):  # not testable?
         attack_type = 0
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
-                attack =  random.randint(1,100)
+                attack =  random.randint(1,25)
                 if (attack <= 12):  # 60%
                     # Trusty Sword
                     attack_type = 1
@@ -144,7 +152,18 @@ def battle(player_1, player_2):  # not testable?
                 else:
                     attack_type = 3
             if isinstance(player_2, Mugwump):
-                attack =  random.randint(1,100)
+                attack =  random.randint(1,25)
+                if (attack <= 12):  # 60%
+                    # Razor-Sharp Claws
+                    attack_type = 1
+                elif (attack <= 17):  # 25%
+                    # Their Fangs of Death
+                    attack_type = 2
+                else:
+                    # heal 15 %
+                    attack_type = 3
+            if isinstance(player_2, Archer):
+                attack =  random.randint(1,25)
                 if (attack <= 12):  # 60%
                     # Razor-Sharp Claws
                     attack_type = 1
@@ -170,7 +189,7 @@ def battle(player_1, player_2):  # not testable?
         attack_type = 0
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
-                attack = random.randint(1, 100)
+                attack = random.randint(1, 25)
                 if (attack <= 12):  # 60%
                     # Trusty Sword
                     attack_type = 1
@@ -180,7 +199,18 @@ def battle(player_1, player_2):  # not testable?
                 else:
                     attack_type = 3
             if isinstance(player_2, Mugwump):
-                attack = random.randint(1, 100)
+                attack = random.randint(1, 25)
+                if (attack <= 12):  # 60%
+                    # Razor-Sharp Claws
+                    attack_type = 1
+                elif (attack <= 17):  # 25%
+                    # Their Fangs of Death
+                    attack_type = 2
+                else:
+                    # heal 15 %
+                    attack_type = 3
+            if isinstance(player_2, Archer):
+                attack = random.randint(1, 25)
                 if (attack <= 12):  # 60%
                     # Razor-Sharp Claws
                     attack_type = 1
@@ -206,6 +236,9 @@ def battle(player_1, player_2):  # not testable?
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
             if isinstance(player_1, Mugwump):
                 cur_attack = attackChoiceMugwump()
+                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
+            if isinstance(player_1, Archer):
+                cur_attack = attackChoiceArcher()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
 
         player_2.takeDamage(damage)  # apply damage to mugwump
@@ -255,6 +288,18 @@ def attackChoiceMugwump() -> int: # this should be testable, see https://stackov
                         "Enter choice: "))
     return choice
 
+def attackChoiceArcher() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
+    # this may need to change, probably needs to move into mugwump and warrior
+    # mugwump already has ai, but when controlled human will need something like this
+
+    choice = int(input( "How would you like to attack?\n"
+                        "1. Your Bow and Arrow\n"
+                        "2. Your Knife\n"
+                        "3. A Potion\n"
+                        "4. Focus (Next Attack can't miss)\n"
+                        "Enter choice: "))
+    return choice
+
 """
    Determines which combatant attacks first and returns the result. In the case of a tie,
    re-roll.
@@ -285,17 +330,19 @@ def victory(victor, player_1, player_2):  # not testable (or at least we won't w
     if (victor == player_1):
         if isinstance(player_1, GameProt):
             if isinstance(player_1, Warrior):
-                print("The citizens cheer and invite you back to town for a feast"
-                      " as thanks for saving their lives (again)!")
-            if isinstance(player_1, Mugwump):
-                print("You beat the Warrior! Let's mock the Warrior for how pathetically he fought you.")
+                print("You won! Let's mock Player 2 for how pathetically he fought you.")
+            elif isinstance(player_1, Mugwump):
+                print("You won! Let's mock Player 2 for how pathetically he fought you.")
+            elif isinstance(player_1, Archer):
+                print("You won! Let's mock Player 2 for how pathetically he fought you.")
     if (victor == player_2):
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
-                print("The citizens cheer and invite the Warrior back to town for a feast"
-                        " as thanks for saving their lives (again)!")
-            if isinstance(player_2, Mugwump):
-                print("You loose to the Mugwump! He mocks you for how pathetically you fought")
+                print("You lost to the warrior. He mocks you for how pathetically you fought.")
+            elif isinstance(player_2, Mugwump):
+                print("You lost to the Mugwump! He mocks you for how pathetically you fought")
+            elif isinstance(player_2, Archer):
+                print("You lost to the Archer! He mocks you for how pathetically you fought.")
 
 
 """
