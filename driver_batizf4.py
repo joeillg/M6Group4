@@ -75,7 +75,6 @@ def main():  # not testable
 
         if maxHP != 0:
             player_1.setMaxHP(maxHP)
-            print(maxHP)
 
 
         print("Is Player 2 a Warrior, Archer, or a Mugwump? Player 2 is AI controlled.")
@@ -387,20 +386,24 @@ def saveCharacter(player_1, player_1_name, player_1_selection):
 def loadCharacter():
     with open('characters.csv', newline='') as csvfile:
         charReader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        i = 1
+        i = 0
         characters = []
         for row in charReader:
+            i = i + 1
             print(i, ', '.join(row))
             characters.append(row)
-            i = i + 1
         stillNeedInput = True
         while stillNeedInput:
              try:
                  charSelect = int(input("Select a saved character (use index number): "))
-                 stillNeedInput = False
+                 if charSelect > i:
+                     print("Character index is not valid. Try again: ")
+                     stillNeedInput = True
+                 else:
+                     stillNeedInput = False
              except ValueError:
                  print("Oops!  That was no valid character.  Try again...")
-        #print(characters)
+
         charSelect = charSelect - 1
         charName = characters[charSelect][0]
         charClass = characters[charSelect][1]
