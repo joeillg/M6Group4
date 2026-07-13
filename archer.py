@@ -96,3 +96,7 @@ class Archer:
 
     def getMaxHitPoints(self):
         return self.maxHitPoints
+
+    def setMaxHP(self, maxHP):
+        self.maxHitPoints = maxHP
+        self.hitPoints = self.maxHitPoints

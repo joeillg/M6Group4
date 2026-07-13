@@ -56,16 +56,28 @@ def main():  # not testable
 
 
         #selection of classes for players
-        print("Enter name for Player 1")
-        player_1_name = input()
-        print(f"Is {player_1_name} a Warrior, Archer, or a Mugwump? Player 1 is human controlled.")
-        player_1_selection = input()
+        print("Do you want to load a saved character? y/n")
+        loadChar = input()
+        if str.lower(loadChar) == "y":
+            player_1_name, player_1_selection, maxHP = loadCharacter()
+        else:
+            maxHP = 0
+            print("Enter name for Player 1")
+            player_1_name = input()
+            print(f"Is {player_1_name} a Warrior, Archer, or a Mugwump? Player 1 is human controlled.")
+            player_1_selection = input()
         if str.lower(player_1_selection) == "warrior":
             player_1 = Warrior()
         elif str.lower(player_1_selection) == "mugwump":
             player_1 = Mugwump()
         elif str.lower(player_1_selection) == "archer":
             player_1 = Archer()
+
+        if maxHP != 0:
+            player_1.setMaxHP(maxHP)
+            print(maxHP)
+
+
         print("Is Player 2 a Warrior, Archer, or a Mugwump? Player 2 is AI controlled.")
         player_2_selection = input()
         if str.lower(player_2_selection) == "warrior":
@@ -74,7 +86,6 @@ def main():  # not testable
             player_2 = Mugwump()
         elif str.lower(player_2_selection) == "archer":
             player_2 = Archer()
-
 
         victor = "none"
 
@@ -367,11 +378,33 @@ def playAgain() -> bool:  # this should be testable, see https://stackoverflow.c
     return False
 
 def saveCharacter(player_1, player_1_name, player_1_selection):
-    with open('characters.csv', 'w', newline='') as csvfile:
+    with open('characters.csv', 'a', newline='') as csvfile:
         maxHitPoints = player_1.getMaxHitPoints()
         charWriter = csv.writer(csvfile, delimiter=' ',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
         charWriter.writerow([player_1_name] + [player_1_selection] + [str(maxHitPoints)])
 
+def loadCharacter():
+    with open('characters.csv', newline='') as csvfile:
+        charReader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        i = 1
+        characters = []
+        for row in charReader:
+            print(i, ', '.join(row))
+            characters.append(row)
+            i = i + 1
+        stillNeedInput = True
+        while stillNeedInput:
+             try:
+                 charSelect = int(input("Select a saved character (use index number): "))
+                 stillNeedInput = False
+             except ValueError:
+                 print("Oops!  That was no valid character.  Try again...")
+        #print(characters)
+        charSelect = charSelect - 1
+        charName = characters[charSelect][0]
+        charClass = characters[charSelect][1]
+        charHP = int(characters[charSelect][2])
+        return charName, charClass, charHP
 if __name__ == "__main__":
     main()
