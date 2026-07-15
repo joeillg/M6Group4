@@ -12,6 +12,7 @@ from typing import Protocol, runtime_checkable
 from mugwump import Mugwump
 from warrior import Warrior
 from archer import Archer
+from rogue import Rogue
 from die import Die
 import random
 import csv
@@ -64,7 +65,7 @@ def main():  # not testable
             maxHP = 0
             print("Enter name for Player 1")
             player_1_name = input()
-            print(f"Is {player_1_name} a Warrior, Archer, or a Mugwump? Player 1 is human controlled.")
+            print(f"Is {player_1_name} a Warrior, Archer, Rogue, or a Mugwump? Player 1 is human controlled.")
             player_1_selection = input()
         if str.lower(player_1_selection) == "warrior":
             player_1 = Warrior()
@@ -72,12 +73,14 @@ def main():  # not testable
             player_1 = Mugwump()
         elif str.lower(player_1_selection) == "archer":
             player_1 = Archer()
+        elif str.lower(player_1_selection) == "rogue":
+            player_1 = Rogue()
 
         if maxHP != 0:
             player_1.setMaxHP(maxHP)
 
 
-        print("Is Player 2 a Warrior, Archer, or a Mugwump? Player 2 is AI controlled.")
+        print("Is Player 2 a Warrior, Archer, Rogue, or a Mugwump? Player 2 is AI controlled.")
         player_2_selection = input()
         if str.lower(player_2_selection) == "warrior":
             player_2 = Warrior()
@@ -85,6 +88,8 @@ def main():  # not testable
             player_2 = Mugwump()
         elif str.lower(player_2_selection) == "archer":
             player_2 = Archer()
+        elif str.lower(player_2_selection) == "rogue":
+            player_2 = Rogue()
 
         victor = "none"
 
@@ -150,6 +155,9 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
             if isinstance(player_1, Archer):
                 cur_attack = attackChoiceArcher()
                 damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
+            if isinstance(player_1, Rogue):
+                cur_attack = attackChoiceRogue()
+                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
         player_2.takeDamage(damage) # apply damage to mugwump
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
@@ -191,6 +199,19 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 else:
                     # heal 12 %
                     attack_type = 4
+
+            if isinstance(player_2, Rogue):
+                attack =  random.randint(1,20)
+                if (attack <= 11):  # 50%
+                    # Quick Strike
+                    attack_type = 1
+                elif (attack <= 16):  # 30%
+                    # Backstab
+                    attack_type = 2
+                else: #20%
+                    # Steal
+                    attack_type = 3
+
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
         if(damage > 0):
@@ -239,6 +260,19 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 else:
                     # heal 12 %
                     attack_type = 4
+
+            if isinstance(player_2, Rogue):
+                attack = random.randint(1, 20)
+                if (attack <= 10):  # 50%
+                    # Quick Strike
+                    attack_type = 1
+                elif (attack <= 14):  # 30%
+                    # Backstab
+                    attack_type = 2
+                else: #20%
+                    # Steal
+                    attack_type = 3
+
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
         if (damage > 0):
@@ -258,6 +292,9 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
             if isinstance(player_1, Archer):
                 cur_attack = attackChoiceArcher()
+                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
+            if isinstance(player_1, Rogue):
+                cur_attack = attackChoiceRogue()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
 
         player_2.takeDamage(damage)  # apply damage to mugwump
@@ -319,8 +356,18 @@ def attackChoiceArcher() -> int: # this should be testable, see https://stackove
                         "Enter choice: "))
     return choice
 
-"""
-   Determines which combatant attacks first and returns the result. In the case of a tie,
+def attackChoiceRogue() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
+    # this may need to change, probably needs to move into mugwump and warrior
+    # mugwump already has ai, but when controlled human will need something like this
+
+    choice = int(input( "How would you like to attack?\n"
+                        "1. Quick strike\n"
+                        "2. Backstab\n"  
+                        "3. Steal (heal for half the damage dealt)\n"
+                        "Enter choice: "))
+    return choice
+
+"""Determines which combatant attacks first and returns the result. In the case of a tie,
    re-roll.
    @return 1 if the warrior goes first, 2 if the mugwump goes first
  """
