@@ -22,27 +22,21 @@ def my_archer():
 
 
 def test_attack(my_archer):
-    attack_type = 1
-    for i in range(100):
-        damage = my_archer.attack(1)
-        assert (damage >= 0 and damage < 13)
 
-    attack_type = 2
-    for i in range(100):
-        damage = my_archer.attack(2)
-        assert (damage >= 0 and damage < 19)
-
-    attack_type = 4
-    for i in range(100):
-        damage = my_archer.attack(4)
-        assert (damage <= 0 and damage > -7)
-
-    attack_type = 3
     for i in range(100):
         damage = my_archer.attack(3)
         assert (damage == 0)
         assert my_archer.focus == True
+        damage = my_archer.attack(1)
+        assert damage > 0 and damage < 13
 
+    for i in range(100):
+        damage = my_archer.attack(2)
+        assert (damage >= 0 and damage < 19)
+
+    for i in range(100):
+        damage = my_archer.attack(4)
+        assert (damage <= 0 and damage > -7)
 
 def test_take_damage(my_archer):
     my_archer.takeDamage(5)
