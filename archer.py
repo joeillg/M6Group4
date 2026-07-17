@@ -80,8 +80,8 @@ class Archer:
         return damage # range looks like -6 ... 0 .. 18. maybe test this 100 times
 
     """
-       This method determines what action the Mugwump performs
-       @return 1 for a Claw attack, 2 for a Bite, and 3 if the Mugwump licks its wounds
+       This method determines what damage and action the Archer performs
+       @return damage based on attack choice
      """
 
     def takeDamage(self, amount: int): # testable, instructor provided example
