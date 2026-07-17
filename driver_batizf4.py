@@ -66,7 +66,7 @@ def main():  # not testable
             maxHP = 0
             print("Enter name for Player 1")
             player_1_name = input()
-            print(f"Is {player_1_name} a Warrior, Archer, Rogue, or a Mugwump? Player 1 is human controlled.")
+            print(f"Is {player_1_name} a Warrior, Archer, Rogue, Wizard or a Mugwump? Player 1 is human controlled.")
             player_1_selection = input()
         if str.lower(player_1_selection) == "warrior":
             player_1 = Warrior()
@@ -76,12 +76,14 @@ def main():  # not testable
             player_1 = Archer()
         elif str.lower(player_1_selection) == "rogue":
             player_1 = Rogue()
+        elif str.lower(player_1_selection) == "wizard":
+            player_1 = Wizard()
 
         if maxHP != 0:
             player_1.setMaxHP(maxHP)
 
 
-        print("Is Player 2 a Warrior, Archer, Rogue, or a Mugwump? Player 2 is AI controlled.")
+        print("Is Player 2 a Warrior, Archer, Rogue, Wizard or a Mugwump? Player 2 is AI controlled.")
         player_2_selection = input()
         if str.lower(player_2_selection) == "warrior":
             player_2 = Warrior()
@@ -91,6 +93,8 @@ def main():  # not testable
             player_2 = Archer()
         elif str.lower(player_2_selection) == "rogue":
             player_2 = Rogue()
+        elif str.lower(player_2_selection) == "wizard":
+            player_2 = Wizard()
 
         victor = "none"
 
@@ -150,15 +154,18 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
             if isinstance(player_1, Warrior):
                 cur_attack = attackChoiceWarrior()
                 damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            if isinstance(player_1, Mugwump):
+            elif isinstance(player_1, Mugwump):
                 cur_attack = attackChoiceMugwump()
                 damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            if isinstance(player_1, Archer):
+            elif isinstance(player_1, Archer):
                 cur_attack = attackChoiceArcher()
                 damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            if isinstance(player_1, Rogue):
+            elif isinstance(player_1, Rogue):
                 cur_attack = attackChoiceRogue()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
+            #elif isinstance(player_1, Wizard):
+                #cur_attack = attackChoiceWizard()
+                #damage = player_1.attack((cur_attack))
         player_2.takeDamage(damage) # apply damage to mugwump
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
@@ -175,7 +182,7 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 else:  # 25%
                     # Shield of Light
                     attack_type = 2
-            if isinstance(player_2, Mugwump):
+            elif isinstance(player_2, Mugwump):
                 attack =  random.randint(1,20)
                 if (attack <= 12):  # 60%
                     # Razor-Sharp Claws
@@ -186,22 +193,22 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 else:
                     # heal 15 %
                     attack_type = 3
-            if isinstance(player_2, Archer):
+            elif isinstance(player_2, Archer):
                 attack =  random.randint(1,20)
-                if (attack <= 12):  # 48%
+                if (attack <= 9):  # 45%
                     # Arrow
                     attack_type = 1
-                elif (attack <= 17):  # 20%
+                elif (attack <= 15):  # 30%
                     # Knife
                     attack_type = 2
-                elif (attack <= 22): #20%
+                elif (attack <= 18): #15%
                     #Focus
                     attack_type = 3
                 else:
-                    # heal 12 %
+                    # heal 10 %
                     attack_type = 4
 
-            if isinstance(player_2, Rogue):
+            elif isinstance(player_2, Rogue):
                 attack =  random.randint(1,20)
                 if (attack <= 11):  # 50%
                     # Quick Strike
@@ -212,6 +219,19 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 else: #20%
                     # Steal
                     attack_type = 3
+
+            #elif isinstance(player_2, Wizard):
+            #    attack =  random.randint(1,20)
+            #    if (attack <= 11):  # 50%
+                    # Fireball
+            #        attack_type = 1
+            #    elif (attack <= 16):  # 30%
+            #        # Disintegrate
+            #        attack_type = 2
+            #    else: #20%
+                    # Avada Kedavra
+            #        attack_type = 3
+
 
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
@@ -236,7 +256,7 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 else:  # 25%
                     # Shield of Light
                     attack_type = 2
-            if isinstance(player_2, Mugwump):
+            elif isinstance(player_2, Mugwump):
                 attack = random.randint(1, 20)
                 if (attack <= 12):  # 60%
                     # Razor-Sharp Claws
@@ -247,22 +267,22 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 else:
                     # heal 15 %
                     attack_type = 3
-            if isinstance(player_2, Archer):
-                attack = random.randint(1, 25)
-                if (attack <= 12):  # 48%
+            elif isinstance(player_2, Archer):
+                attack = random.randint(1, 20)
+                if (attack <= 9):  # 45%
                     # Arrow
                     attack_type = 1
-                elif (attack <= 17):  # 20%
+                elif (attack <= 15):  # 30%
                     # Knife
                     attack_type = 2
-                elif (attack <= 22): # 20%
+                elif (attack <= 18):  # 15%
                     # Focus
                     attack_type = 3
                 else:
-                    # heal 12 %
+                    # heal 10 %
                     attack_type = 4
 
-            if isinstance(player_2, Rogue):
+            elif isinstance(player_2, Rogue):
                 attack = random.randint(1, 20)
                 if (attack <= 10):  # 50%
                     # Quick Strike
@@ -273,6 +293,18 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                 else: #20%
                     # Steal
                     attack_type = 3
+
+            #elif isinstance(player_2, Wizard):
+                #attack = random.randint(1, 20)
+                #if (attack <= 10):  # 50%
+                    # Fireball
+                #    attack_type = 1
+                #elif (attack <= 14):  # 30%
+                    # Disintegrate
+                #    attack_type = 2
+                #else: #20%
+                    # Avada Kedavra
+                #    attack_type = 3
 
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
@@ -288,16 +320,18 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
             if isinstance(player_1, Warrior):
                 cur_attack = attackChoiceWarrior()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            if isinstance(player_1, Mugwump):
+            elif isinstance(player_1, Mugwump):
                 cur_attack = attackChoiceMugwump()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            if isinstance(player_1, Archer):
+            elif isinstance(player_1, Archer):
                 cur_attack = attackChoiceArcher()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            if isinstance(player_1, Rogue):
+            elif isinstance(player_1, Rogue):
                 cur_attack = attackChoiceRogue()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-
+            #elif isinstance(player_1, Wizard):
+                #cur_attack = attackChoiceWizard()
+                #damage = player_1.attack((cur_attack))
         player_2.takeDamage(damage)  # apply damage to mugwump
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
@@ -365,6 +399,17 @@ def attackChoiceRogue() -> int: # this should be testable, see https://stackover
                         "1. Quick strike\n"
                         "2. Backstab\n"  
                         "3. Steal (heal for half the damage dealt)\n"
+                        "Enter choice: "))
+    return choice
+
+def attackChoiceWizard() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
+    # this may need to change, probably needs to move into mugwump and warrior
+    # mugwump already has ai, but when controlled human will need something like this
+
+    choice = int(input( "How would you like to attack?\n"
+                        "1. Fireball\n"
+                        "2. Disintegrate\n"  
+                        "3. Avada Kedavra (Heal)\n"
                         "Enter choice: "))
     return choice
 
