@@ -163,9 +163,9 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
             elif isinstance(player_1, Rogue):
                 cur_attack = attackChoiceRogue()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            #elif isinstance(player_1, Wizard):
-                #cur_attack = attackChoiceWizard()
-                #damage = player_1.attack((cur_attack))
+            elif isinstance(player_1, Wizard):
+                cur_attack = attackChoiceWizard()
+                damage = player_1.attack((cur_attack))
         player_2.takeDamage(damage) # apply damage to mugwump
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
@@ -220,17 +220,17 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                     # Steal
                     attack_type = 3
 
-            #elif isinstance(player_2, Wizard):
-            #    attack =  random.randint(1,20)
-            #    if (attack <= 11):  # 50%
+            elif isinstance(player_2, Wizard):
+                attack =  random.randint(1,20)
+                if (attack <= 11):  # 50%
                     # Fireball
-            #        attack_type = 1
-            #    elif (attack <= 16):  # 30%
-            #        # Disintegrate
-            #        attack_type = 2
-            #    else: #20%
+                    attack_type = 1
+                elif (attack <= 16):  # 30%
+                    # Disintegrate
+                    attack_type = 2
+                else: #20%
                     # Avada Kedavra
-            #        attack_type = 3
+                    attack_type = 3
 
 
         damage = player_2.attack(attack_type)
@@ -294,17 +294,17 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
                     # Steal
                     attack_type = 3
 
-            #elif isinstance(player_2, Wizard):
-                #attack = random.randint(1, 20)
-                #if (attack <= 10):  # 50%
+            elif isinstance(player_2, Wizard):
+                attack = random.randint(1, 20)
+                if (attack <= 10):  # 50%
                     # Fireball
-                #    attack_type = 1
-                #elif (attack <= 14):  # 30%
+                    attack_type = 1
+                elif (attack <= 14):  # 30%
                     # Disintegrate
-                #    attack_type = 2
-                #else: #20%
+                    attack_type = 2
+                else: #20%
                     # Avada Kedavra
-                #    attack_type = 3
+                    attack_type = 3
 
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
@@ -329,9 +329,9 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
             elif isinstance(player_1, Rogue):
                 cur_attack = attackChoiceRogue()
                 damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            #elif isinstance(player_1, Wizard):
-                #cur_attack = attackChoiceWizard()
-                #damage = player_1.attack((cur_attack))
+            elif isinstance(player_1, Wizard):
+                cur_attack = attackChoiceWizard()
+                damage = player_1.attack((cur_attack))
         player_2.takeDamage(damage)  # apply damage to mugwump
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
