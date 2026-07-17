@@ -13,6 +13,7 @@ from mugwump import Mugwump
 from warrior import Warrior
 from archer import Archer
 from rogue import Rogue
+from wizard import Wizard
 from die import Die
 import random
 import csv
