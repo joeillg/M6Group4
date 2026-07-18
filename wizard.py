@@ -78,3 +78,10 @@ class Wizard:
                 self.hitPoints = self.maxHitPoints
         else:
             self.hitPoints = 0
+
+    def getMaxHitPoints(self):
+        return self.maxHitPoints
+
+    def setMaxHP(self, maxHP):
+        self.maxHitPoints = maxHP
+        self.hitPoints = self.maxHitPoints

@@ -24,7 +24,7 @@ def my_archer():
 def test_attack(my_archer):
 
     for i in range(100):
-        damage = my_archer.attack(3)
+        damage = my_archer.attack(4)
         assert (damage == 0)
         assert my_archer.focus == True
         damage = my_archer.attack(1)
@@ -35,7 +35,7 @@ def test_attack(my_archer):
         assert (damage >= 0 and damage < 19)
 
     for i in range(100):
-        damage = my_archer.attack(4)
+        damage = my_archer.attack(3)
         assert (damage <= 0 and damage > -7)
 
 def test_take_damage(my_archer):
