@@ -16,6 +16,7 @@ class Mugwump:
         self.d20 = Die(20)
         self.d10 = Die(10)
         self.d6 = Die(6)
+        self.attackChoices = ["Claws", "Fangs", "Heal",]
 
         # hitpoints, max is set
         # Mugwump uses six d10 to calculate their starting Hit Points.

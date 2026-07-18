@@ -16,6 +16,7 @@ class Rogue:
         self.d10 = Die(10)
         self.d8 = Die(8)
         self.d6 = Die(6)
+        self.attackChoices = ["Quick Strike", "Backstab", "Steal",]
 
         # hitpoints, max is set
         # Rogue uses three d10 to calculate their starting Hit Points.

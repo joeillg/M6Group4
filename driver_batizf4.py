@@ -58,8 +58,10 @@ def main():  # not testable
 
 
         #selection of classes for players
+        characters = ["warrior","mugwump","archer","rogue","wizard"]
         print("Do you want to load a saved character? y/n")
         loadChar = input()
+        maxHP = 0
         if str.lower(loadChar) == "y":
             player_1_name, player_1_selection, maxHP = loadCharacter()
         else:
@@ -67,34 +69,17 @@ def main():  # not testable
             print("Enter name for Player 1")
             player_1_name = input()
             print(f"Is {player_1_name} a Warrior, Archer, Rogue, Wizard or a Mugwump? Player 1 is human controlled.")
-            player_1_selection = input()
-        if str.lower(player_1_selection) == "warrior":
-            player_1 = Warrior()
-        elif str.lower(player_1_selection) == "mugwump":
-            player_1 = Mugwump()
-        elif str.lower(player_1_selection) == "archer":
-            player_1 = Archer()
-        elif str.lower(player_1_selection) == "rogue":
-            player_1 = Rogue()
-        elif str.lower(player_1_selection) == "wizard":
-            player_1 = Wizard()
+            #player_1_selection = input()
+            player_1_selection = playerSelection(characters)
+        player_1 = createCharacter(player_1_selection)
 
         if maxHP != 0:
             player_1.setMaxHP(maxHP)
 
-
         print("Is Player 2 a Warrior, Archer, Rogue, Wizard or a Mugwump? Player 2 is AI controlled.")
-        player_2_selection = input()
-        if str.lower(player_2_selection) == "warrior":
-            player_2 = Warrior()
-        elif str.lower(player_2_selection) == "mugwump":
-            player_2 = Mugwump()
-        elif str.lower(player_2_selection) == "archer":
-            player_2 = Archer()
-        elif str.lower(player_2_selection) == "rogue":
-            player_2 = Rogue()
-        elif str.lower(player_2_selection) == "wizard":
-            player_2 = Wizard()
+        player_2_selection = playerSelection(characters)
+        player_2 = createCharacter(player_2_selection)
+
 
         victor = "none"
 
@@ -151,21 +136,9 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         # Player 1 attacks and assigns the resulting damage to Player 2
         print(f"{player_1_name} attacks first!")
         if isinstance(player_1, GameProt):
-            if isinstance(player_1, Warrior):
-                cur_attack = attackChoiceWarrior()
-                damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            elif isinstance(player_1, Mugwump):
-                cur_attack = attackChoiceMugwump()
-                damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            elif isinstance(player_1, Archer):
-                cur_attack = attackChoiceArcher()
-                damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            elif isinstance(player_1, Rogue):
-                cur_attack = attackChoiceRogue()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            elif isinstance(player_1, Wizard):
-                cur_attack = attackChoiceWizard()
-                damage = player_1.attack((cur_attack))
+            cur_attack = attackChoice(player_1)
+            damage = player_1.attack((cur_attack))
+
         player_2.takeDamage(damage) # apply damage to mugwump
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
@@ -317,21 +290,9 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
             return player_2  # mugwump wins!
 
         if isinstance(player_1, GameProt):
-            if isinstance(player_1, Warrior):
-                cur_attack = attackChoiceWarrior()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            elif isinstance(player_1, Mugwump):
-                cur_attack = attackChoiceMugwump()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            elif isinstance(player_1, Archer):
-                cur_attack = attackChoiceArcher()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            elif isinstance(player_1, Rogue):
-                cur_attack = attackChoiceRogue()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            elif isinstance(player_1, Wizard):
-                cur_attack = attackChoiceWizard()
-                damage = player_1.attack((cur_attack))
+            cur_attack = attackChoice(player_1)
+            damage = player_1.attack((cur_attack))
+
         player_2.takeDamage(damage)  # apply damage to mugwump
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
@@ -358,60 +319,61 @@ def report(player_1, player_2, player_1_name, player_1_selection, player_2_selec
    This method asks the user what attack type they want to use and returns the result
    @return 1 for sword, 2 for shield
  """
-def attackChoiceWarrior() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
 
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Your Trusty Sword\n"
-                        "2. Your Shield of Light\n"
-                        "Enter choice: "))
-    return choice
 
-def attackChoiceMugwump() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
+""" This function allows Player 1 to select their attack"""
+def attackChoice(player):
+    stillNeedInput = True
+    print("How would you like to attack?\n")
+    totalChoices = len(player.attackChoices)
+    for i in range(totalChoices):
+        i = i+1
+        print(f"{i}. {player.attackChoices[i-1]}")
+                        #"1. Your Bow and Arrow\n"
+                        #"2. Your Knife\n"
+                        #"3. Focus (Next Attack can't miss)\n"
+                        #"4. A Potion\n"
+                        #"Enter choice: "))
+    while stillNeedInput:
+         try:
+             x = int(input())
+             if x > 0 and x <= totalChoices:
+                stillNeedInput = False
+             else:
+                 print("Please enter a valid choice")
+         except ValueError:
+             print("Please enter a valid choice")
+    return x
 
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Your Claws\n"
-                        "2. Your Fangs\n"
-                        "3. Your Healing Powers\n"
-                        "Enter choice: "))
-    return choice
+"""Function can be called for player selection for players 1 and 2"""
+def playerSelection(characters):
+    stillNeedChoice = False
+    while stillNeedChoice == False:
+        player_selection = input()
+        for character in characters:
+            if str.lower(player_selection) == character or stillNeedChoice == True:
+                stillNeedChoice = True
+            else:
+                stillNeedChoice = False
+        if stillNeedChoice == False:
+            print("Not a valid character. Please enter a valid character.")
 
-def attackChoiceArcher() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
+    return player_selection
 
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Your Bow and Arrow\n"
-                        "2. Your Knife\n"  
-                        "3. Focus (Next Attack can't miss)\n"
-                        "4. A Potion\n"
-                        "Enter choice: "))
-    return choice
 
-def attackChoiceRogue() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
-
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Quick strike\n"
-                        "2. Backstab\n"  
-                        "3. Steal (heal for half the damage dealt)\n"
-                        "Enter choice: "))
-    return choice
-
-def attackChoiceWizard() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
-
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Fireball\n"
-                        "2. Disintegrate\n"  
-                        "3. Avada Kedavra (Heal)\n"
-                        "Enter choice: "))
-    return choice
+"""Creates the character based on the player selection that is passed to it"""
+def createCharacter(playerSelection):
+    if str.lower(playerSelection) == "warrior":
+        player = Warrior()
+    elif str.lower(playerSelection) == "mugwump":
+        player = Mugwump()
+    elif str.lower(playerSelection) == "archer":
+        player = Archer()
+    elif str.lower(playerSelection) == "rogue":
+        player = Rogue()
+    elif str.lower(playerSelection) == "wizard":
+        player = Wizard()
+    return player
 
 """Determines which combatant attacks first and returns the result. In the case of a tie,
    re-roll.

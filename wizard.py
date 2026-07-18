@@ -16,6 +16,7 @@ class Wizard:
         self.d20 = Die(20)
         self.d10 = Die(10)
         self.d6 = Die(6)
+        self.attackChoices = ["Fireball", "Disintegrate", "Avada Kedavra"]
 
         # hitpoints, max is set
         # Wizard uses six d10 to calculate their starting Hit Points.

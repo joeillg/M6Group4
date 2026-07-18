@@ -17,6 +17,7 @@ class Archer:
         self.d10 = Die(10)
         self.d6 = Die(6)
         self.focus = False
+        self.attackChoices = ["arrow","knife","focus","potion"]
 
         # hitpoints, max is set
         # Archer uses four d10 to calculate their starting Hit Points.

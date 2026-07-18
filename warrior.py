@@ -16,6 +16,7 @@ class Warrior:
         self.d10 = Die(10)
         self.d8 = Die(8)
         self.d4 = Die(4)
+        self.attackChoices = ["Trusty Sword", "Shield of Light"]
 
         # hitpoints, max is set
         # Warrior uses four d10 to calculate their starting Hit Points.
