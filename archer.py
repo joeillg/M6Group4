@@ -7,6 +7,7 @@
 """
 
 from die import Die
+import random
 
 
 class Archer:
@@ -95,3 +96,32 @@ class Archer:
     def setMaxHP(self, maxHP):
         self.maxHitPoints = maxHP
         self.hitPoints = self.maxHitPoints
+
+    def aiAttack(self):
+        if not self.focus:
+            attack = random.randint(1, 20)
+            if (attack <= 9):  # 45%
+                # Arrow
+                attack_type = 1
+            elif (attack <= 15):  # 30%
+                # Knife
+                attack_type = 2
+            elif (attack <= 18):  # 15%
+            # Focus
+                attack_type = 4
+            else:
+            # heal 10 %
+                attack_type = 3
+        else:
+            attack = random.randint(1, 20)
+            if (attack <= 11):  # 55%
+                # Arrow
+                attack_type = 1
+            elif (attack <= 15):  # 30%
+                # Knife
+                attack_type = 2
+            else:
+                # potion
+                attack_type = 3
+
+        return attack_type

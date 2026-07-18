@@ -7,6 +7,7 @@
 """
 
 from die import Die
+import random
 class Warrior:
 
 
@@ -73,3 +74,14 @@ class Warrior:
     def setMaxHP(self, maxHP):
         self.maxHitPoints = maxHP
         self.hitPoints = self.maxHitPoints
+
+    def aiAttack(self):
+        attack = random.randint(1, 20)
+        if (attack <= 12):  # 60%
+            # Trusty Sword
+            attack_type = 1
+        else:  # 25%
+            # Shield of Light
+            attack_type = 2
+
+        return attack_type

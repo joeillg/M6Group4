@@ -7,6 +7,7 @@
 """
 
 from die import Die
+import random
 
 
 class Mugwump:
@@ -78,3 +79,17 @@ class Mugwump:
     def setMaxHP(self, maxHP):
         self.maxHitPoints = maxHP
         self.hitPoints = self.maxHitPoints
+
+    def aiAttack(self):
+        attack = random.randint(1, 20)
+        if (attack <= 12):  # 60%
+            # Razor-Sharp Claws
+            attack_type = 1
+        elif (attack <= 17):  # 25%
+            # Their Fangs of Death
+            attack_type = 2
+        else:
+            # heal 15 %
+            attack_type = 3
+
+        return attack_type

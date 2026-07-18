@@ -7,6 +7,7 @@
 """
 
 from die import Die
+import random
 class Rogue:
 
 
@@ -78,3 +79,17 @@ class Rogue:
     def setMaxHP(self, maxHP):
         self.maxHitPoints = maxHP
         self.hitPoints = self.maxHitPoints
+
+    def aiAttack(self):
+        attack = random.randint(1, 20)
+        if (attack <= 10):  # 50%
+            # Quick Strike
+            attack_type = 1
+        elif (attack <= 14):  # 30%
+            # Backstab
+            attack_type = 2
+        else:  # 20%
+            # Steal
+            attack_type = 3
+
+        return attack_type

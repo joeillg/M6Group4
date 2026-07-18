@@ -146,65 +146,7 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         # If not, Mugwump attacks!
         print(f"How is {player_2_selection} attacking?")
         attack_type = 0
-        if isinstance(player_2, GameProt):
-            if isinstance(player_2, Warrior):
-                attack =  random.randint(1,20)
-                if (attack <= 12):  # 60%
-                    # Trusty Sword
-                    attack_type = 1
-                else:  # 25%
-                    # Shield of Light
-                    attack_type = 2
-            elif isinstance(player_2, Mugwump):
-                attack =  random.randint(1,20)
-                if (attack <= 12):  # 60%
-                    # Razor-Sharp Claws
-                    attack_type = 1
-                elif (attack <= 17):  # 25%
-                    # Their Fangs of Death
-                    attack_type = 2
-                else:
-                    # heal 15 %
-                    attack_type = 3
-            elif isinstance(player_2, Archer):
-                attack =  random.randint(1,20)
-                if (attack <= 9):  # 45%
-                    # Arrow
-                    attack_type = 1
-                elif (attack <= 15):  # 30%
-                    # Knife
-                    attack_type = 2
-                elif (attack <= 18): #15%
-                    #Focus
-                    attack_type = 3
-                else:
-                    # heal 10 %
-                    attack_type = 4
-
-            elif isinstance(player_2, Rogue):
-                attack =  random.randint(1,20)
-                if (attack <= 11):  # 50%
-                    # Quick Strike
-                    attack_type = 1
-                elif (attack <= 16):  # 30%
-                    # Backstab
-                    attack_type = 2
-                else: #20%
-                    # Steal
-                    attack_type = 3
-
-            elif isinstance(player_2, Wizard):
-                attack =  random.randint(1,20)
-                if (attack <= 11):  # 50%
-                    # Fireball
-                    attack_type = 1
-                elif (attack <= 16):  # 30%
-                    # Disintegrate
-                    attack_type = 2
-                else: #20%
-                    # Avada Kedavra
-                    attack_type = 3
-
+        attack_type = player_2.aiAttack()
 
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
@@ -220,64 +162,8 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         # player_2 attacks and assigns the resulting damage to the player_1
         print(f"How is {player_2_selection} attacking?")
         attack_type = 0
-        if isinstance(player_2, GameProt):
-            if isinstance(player_2, Warrior):
-                attack = random.randint(1, 20)
-                if (attack <= 12):  # 60%
-                    # Trusty Sword
-                    attack_type = 1
-                else:  # 25%
-                    # Shield of Light
-                    attack_type = 2
-            elif isinstance(player_2, Mugwump):
-                attack = random.randint(1, 20)
-                if (attack <= 12):  # 60%
-                    # Razor-Sharp Claws
-                    attack_type = 1
-                elif (attack <= 17):  # 25%
-                    # Their Fangs of Death
-                    attack_type = 2
-                else:
-                    # heal 15 %
-                    attack_type = 3
-            elif isinstance(player_2, Archer):
-                attack = random.randint(1, 20)
-                if (attack <= 9):  # 45%
-                    # Arrow
-                    attack_type = 1
-                elif (attack <= 15):  # 30%
-                    # Knife
-                    attack_type = 2
-                elif (attack <= 18):  # 15%
-                    # Focus
-                    attack_type = 3
-                else:
-                    # heal 10 %
-                    attack_type = 4
-
-            elif isinstance(player_2, Rogue):
-                attack = random.randint(1, 20)
-                if (attack <= 10):  # 50%
-                    # Quick Strike
-                    attack_type = 1
-                elif (attack <= 14):  # 30%
-                    # Backstab
-                    attack_type = 2
-                else: #20%
-                    # Steal
-                    attack_type = 3
-
-            elif isinstance(player_2, Wizard):
-                attack = random.randint(1, 20)
-                if (attack <= 10):  # 50%
-                    # Fireball
-                    attack_type = 1
-                elif (attack <= 14):  # 30%
-                    # Disintegrate
-                    attack_type = 2
-                else: #20%
-                    # Avada Kedavra
-                    attack_type = 3
+        #if isinstance(player_2, GameProt):
+        attack_type = player_2.aiAttack()
 
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
@@ -403,12 +289,8 @@ def initiative() -> int: # return 1 for warrior, 2 for mugwump
 def victory(victor, player_1, player_2):  # not testable (or at least we won't worry about testing it)
     if (victor == player_1):
         if isinstance(player_1, GameProt):
-            if isinstance(player_1, Warrior):
-                print("You won! Let's mock Player 2 for how pathetically he fought you.")
-            elif isinstance(player_1, Mugwump):
-                print("You won! Let's mock Player 2 for how pathetically he fought you.")
-            elif isinstance(player_1, Archer):
-                print("You won! Let's mock Player 2 for how pathetically he fought you.")
+            print("You won! Let's mock Player 2 for how pathetically he fought you.")
+
     if (victor == player_2):
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
@@ -417,6 +299,10 @@ def victory(victor, player_1, player_2):  # not testable (or at least we won't w
                 print("You lost to the Mugwump! He mocks you for how pathetically you fought")
             elif isinstance(player_2, Archer):
                 print("You lost to the Archer! He mocks you for how pathetically you fought.")
+            elif isinstance(player_2, Rogue):
+                print("You lost to the Rogue! He mocks you for how pathetically you fought.")
+            elif isinstance(player_2, Wizard):
+                print("You lost to the Wizard! He mocks you for how pathetically you fought.")
 
 
 """

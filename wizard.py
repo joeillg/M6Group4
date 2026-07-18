@@ -7,6 +7,7 @@
 """
 
 from die import Die
+import random
 
 
 class Wizard:
@@ -85,3 +86,17 @@ class Wizard:
     def setMaxHP(self, maxHP):
         self.maxHitPoints = maxHP
         self.hitPoints = self.maxHitPoints
+
+    def aiAttack(self):
+        attack = random.randint(1, 20)
+        if (attack <= 10):  # 50%
+            # Fireball
+            attack_type = 1
+        elif (attack <= 14):  # 30%
+            # Disintegrate
+            attack_type = 2
+        else:  # 20%
+            # Avada Kedavra
+            attack_type = 3
+
+        return attack_type
