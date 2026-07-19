@@ -14,7 +14,7 @@ import pytest
 
 @pytest.fixture
 def my_archer():
-    archer = Archer()
+    archer = Archer("Test")
     # artificially setting max hitPoints
     archer.maxHitPoints = 20
     archer.hitPoints = 20
@@ -24,18 +24,18 @@ def my_archer():
 def test_attack(my_archer):
 
     for i in range(100):
-        damage = my_archer.attack(4)
+        damage,stealDamage = my_archer.attack(4)
         assert (damage == 0)
         assert my_archer.focus == True
-        damage = my_archer.attack(1)
+        damage,stealDamage = my_archer.attack(1)
         assert damage > 0 and damage < 13
 
     for i in range(100):
-        damage = my_archer.attack(2)
+        damage,stealDamage = my_archer.attack(2)
         assert (damage >= 0 and damage < 19)
 
     for i in range(100):
-        damage = my_archer.attack(3)
+        damage,stealDamage = my_archer.attack(3)
         assert (damage <= 0 and damage > -7)
 
 def test_take_damage(my_archer):

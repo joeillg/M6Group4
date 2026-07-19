@@ -12,12 +12,16 @@ class Rogue:
 
 
 
-    def __init__(self):  # for homework 4 #, aiController:bool):
+    def __init__(self,name):  # for homework 4 #, aiController:bool):
         self.d20 = Die(20)
         self.d10 = Die(10)
         self.d8 = Die(8)
         self.d6 = Die(6)
         self.attackChoices = ["Quick Strike", "Backstab", "Steal",]
+        if name != "AI":
+            self.name = name
+        else:
+            self.name = "Warrior"
 
         # hitpoints, max is set
         # Rogue uses three d10 to calculate their starting Hit Points.
@@ -39,28 +43,29 @@ class Rogue:
         # roll attack die
         # determine results of attack
         damage = 0
+        stealDamage = 0
         if (attack_type == 1): # Quick Strike
             if (self.d20.roll() >= 8):  # do we hit?
                 damage = self.d6.roll()  # 1d6 for damage
-                print(f"Rogue hit for {damage}")
+                print(f"{self.name} hit for {damage}")
             else:
-                print("Rogue misses!")
+                print(f"{self.name} misses!")
         elif (attack_type ==2):  # (attack_type == 2): # Backstab
             if (self.d20.roll() >= 15): # do we hit
                 damage = self.d6.roll() + self.d6.roll() + self.d6.roll()# 3d6 damage
-                print(f"Rogue hit for {damage}")
+                print(f"{self.name} hit for {damage}")
             else:
-                print("Rogue misses")
+                print(f"{self.name} misses")
         else: # (attack_type == 3): # Steal
             if (self.d20.roll() >= 12):  # do we hit?
                 damage = self.d6.roll()  # 1d6 for damage
                 healing = -1 * int((damage+1)/2)
                 self.takeDamage(healing)
-                print(f"Rogue drained {damage} and healed by {-1 * healing}")
+                print(f"{self.name} drained {damage} and healed by {-1 * healing}")
             else:
-                print("Rogue misses!")
+                print(f"{self.name} misses!")
         # return the damage
-        return damage
+        return damage, stealDamage
 
     """
        This method determines what action the Mugwump performs
@@ -70,6 +75,9 @@ class Rogue:
     def takeDamage(self, amount: int):
         if (self.hitPoints >= amount):
             self.hitPoints -= amount
+            # For confirming we don't exceed maxHitpoints
+            if (self.hitPoints > self.maxHitPoints):
+                self.hitPoints = self.maxHitPoints
         else:
             self.hitPoints = 0
 

@@ -14,7 +14,7 @@ import pytest
 
 @pytest.fixture
 def my_warrior():
-    warrior = Warrior()
+    warrior = Warrior("Test")
     # artificially setting max hitPoints
     warrior.maxHitPoints = 20
     warrior.hitPoints = 20
