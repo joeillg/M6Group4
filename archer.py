@@ -22,7 +22,7 @@ class Archer:
         if name != "AI":
             self.name = name
         else:
-            self.name = "Warrior"
+            self.name = "Archer"
 
         # hitpoints, max is set
         # Archer uses four d10 to calculate their starting Hit Points.
