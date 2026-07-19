@@ -21,7 +21,7 @@ class Rogue:
         if name != "AI":
             self.name = name
         else:
-            self.name = "Warrior"
+            self.name = "Rogue"
 
         # hitpoints, max is set
         # Rogue uses three d10 to calculate their starting Hit Points.
