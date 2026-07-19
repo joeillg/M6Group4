@@ -21,7 +21,7 @@ class Mugwump:
         if name != "AI":
             self.name = name
         else:
-            self.name = "Warrior"
+            self.name = "Mugwump"
 
         # hitpoints, max is set
         # Mugwump uses six d10 to calculate their starting Hit Points.
