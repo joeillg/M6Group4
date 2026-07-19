@@ -6,7 +6,7 @@
         Created: 6/30/2026
 """
 
-#test functions in mugwump.py
+# test functions in mugwump.py
 
 from mugwump import Mugwump
 import pytest
@@ -39,3 +39,13 @@ def test_take_damage(my_mugwump):
     assert (my_mugwump.hitPoints == 30)
     my_mugwump.takeDamage(3000000)
     assert (my_mugwump.hitPoints == 0)
+
+
+def test_get_max_hit_points(my_mugwump):
+    maxHitPoints = my_mugwump.getMaxHitPoints()
+    assert maxHitPoints == 30
+
+
+def test_set_max_hp(my_mugwump):
+    my_mugwump.setMaxHP(25)
+    assert my_mugwump.maxHitPoints == 25
