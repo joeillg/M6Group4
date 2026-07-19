@@ -367,6 +367,7 @@ def loadCharacter():
         charName = characters[charSelect][0]
         charClass = characters[charSelect][1]
         charHP = int(characters[charSelect][2])
+        print(f"You selected {charName} a {charClass} with {charHP} max hit points.")
         return charName, charClass, charHP
 if __name__ == "__main__":
     main()
