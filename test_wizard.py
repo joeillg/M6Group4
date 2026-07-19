@@ -43,3 +43,13 @@ def test_take_damage(my_wizard):
     assert (my_wizard.hitPoints == 15)
     my_wizard.takeDamage(15)
     assert (my_wizard.hitPoints == 0)
+
+
+def test_get_max_hit_points(my_wizard):
+    maxHitPoints = my_wizard.getMaxHitPoints()
+    assert maxHitPoints == 20
+
+
+def test_set_max_hp(my_wizard):
+    my_wizard.setMaxHP(25)
+    assert my_wizard.maxHitPoints == 25
