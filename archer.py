@@ -43,7 +43,6 @@ class Archer:
         # roll attack die
         # determine results of attack
         damage = 0
-        stealDamage = 0
         if (attack_type == 1):
             if not self.focus:
                 if (self.d20.roll() >= 13):  # do we hit?
@@ -78,7 +77,7 @@ class Archer:
             damage = 0
             print(f"{self.name} is focusing")
             self.attackChoices = ["arrow", "knife", "potion"]
-        return damage, stealDamage # range looks like -6 ... 0 .. 18. maybe test this 100 times
+        return damage # range looks like -6 ... 0 .. 18. maybe test this 100 times
 
     """
        This method determines what damage and action the Archer performs

@@ -40,7 +40,6 @@ class Wizard:
         # roll attack die
         # determine results of attack
         damage = 0
-        stealDamage = 0
         if (attack_type == 1): # Fireball
             if (self.d20.roll() >= 13):  # do we hit?
                 damage = self.d6.roll() + self.d6.roll()  # 2d6
@@ -69,7 +68,7 @@ class Wizard:
             print(f" {self.name} heals for {-1*damage} damage")
 
         # return the damage
-        return damage, stealDamage # range looks like -6 ... 0 .. 18. maybe test this 100 times
+        return damage # range looks like -6 ... 0 .. 18. maybe test this 100 times
 
     """
        This method determines what action the Wizard performs

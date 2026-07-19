@@ -43,7 +43,6 @@ class Rogue:
         # roll attack die
         # determine results of attack
         damage = 0
-        stealDamage = 0
         if (attack_type == 1): # Quick Strike
             if (self.d20.roll() >= 8):  # do we hit?
                 damage = self.d6.roll()  # 1d6 for damage
@@ -65,7 +64,7 @@ class Rogue:
             else:
                 print(f"{self.name} misses!")
         # return the damage
-        return damage, stealDamage
+        return damage
 
     """
        This method determines what action the Mugwump performs

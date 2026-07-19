@@ -140,14 +140,14 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         print(f"{player_1_name} attacks first!")
         if isinstance(player_1, GameProt):
             cur_attack = attackChoice(player_1)
-            damage,stealDamage = player_1.attack((cur_attack))
+            damage = player_1.attack((cur_attack))
 
         if damage > 0:
             player_2.takeDamage(damage) # apply damage to mugwump
         else:
             player_1.takeDamage(damage)
-        if stealDamage != 0:
-            player_1.takeDamage(stealDamage)
+        #if stealDamage != 0:
+        #    player_1.takeDamage(stealDamage)
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
             return player_1
@@ -156,15 +156,15 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         attack_type = 0
         attack_type = player_2.aiAttack()
 
-        damage,stealDamage = player_2.attack(attack_type)
+        damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
         if(damage > 0):
             player_1.takeDamage(damage)
         else:  #mugwump healed
             player_2.takeDamage(damage) #healing because it is negative
 
-        if stealDamage != 0:
-            player_2.takeDamage(stealDamage)
+        #if stealDamage != 0:
+        #    player_2.takeDamage(stealDamage)
 
         if (player_1.hitPoints == 0):
             return player_2  #mugwump wins!
@@ -176,28 +176,28 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         #if isinstance(player_2, GameProt):
         attack_type = player_2.aiAttack()
 
-        damage,stealDamage = player_2.attack(attack_type)
+        damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
         if (damage > 0):
             player_1.takeDamage(damage)
         else:  # mugwump healed
             player_2.takeDamage(damage)  # healing because it is negative
-        if stealDamage != 0:
-            player_2.takeDamage(stealDamage)
+        #if stealDamage != 0:
+        #    player_2.takeDamage(stealDamage)
 
         if (player_1.hitPoints == 0):
             return player_2  # mugwump wins!
 
         if isinstance(player_1, GameProt):
             cur_attack = attackChoice(player_1)
-            damage,stealDamage = player_1.attack((cur_attack))
+            damage = player_1.attack((cur_attack))
 
         if damage > 0:
             player_2.takeDamage(damage) # apply damage to mugwump
         else:
             player_1.takeDamage(damage)
-        if stealDamage != 0:
-            player_1.takeDamage(stealDamage)
+        #if stealDamage != 0:
+        #    player_1.takeDamage(stealDamage)
         # Check if the Mugwump has been defeated
         if (player_2.hitPoints <= 0):
             return player_1

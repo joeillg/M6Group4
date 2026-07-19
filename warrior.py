@@ -44,13 +44,12 @@ class Warrior:
         # roll attack die
         # determine results of attack
         damage = 0
-        stealDamage = 0
         if (attack_type == 1): # trusty sword
             if (self.d20.roll() >= 12):  # do we hit?
                 damage = self.d8.roll() + self.d8.roll()  # 2d8 for damage
                 print(f"{self.name} hit for {damage}")
             else:
-                print("{self.name} misses!")
+                print(f"{self.name} misses!")
         else:  # (attack_type == 2): # shield of light
             if (self.d20.roll() >= 6): # do we hit
                 damage = self.d4.roll()  # 1d4 damage
@@ -60,7 +59,7 @@ class Warrior:
 
 
         # return the damage
-        return damage,stealDamage
+        return damage
 
     """
        This method determines what action the Mugwump performs
