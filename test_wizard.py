@@ -25,6 +25,10 @@ def test_attack():
     attack_type = 1
     if attack_type == 1:
         assert True
+    if attack_type == 2:
+        assert True
+    if attack_type == 3:
+        assert True
     else:
         assert True
 
@@ -33,6 +37,10 @@ def test_attack():
 @pytest.mark.parametrize("attack_type", [1, 2, 3])  # (1)Fireball, (2) Disintegrate, and (3) Avada Kedavra
 def test_attack(my_wizard, attack_type):
     if attack_type == 1:
+        assert True
+    if attack_type == 2:
+        assert True
+    if attack_type == 3:
         assert True
     else:
         assert True
