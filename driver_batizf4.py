@@ -54,7 +54,7 @@ def main():  # not testable
         #intro()
 
         # initialize game
-        # Initialize the Warrior and Mugwump classes, set the current victor to "none"
+        # Initialize the classes, set the current victor to "none"
         # change to player1 and player2, we ask the user what is what
 
 
@@ -120,13 +120,12 @@ def intro():  # not testable
           "You would also have your Shield of Light, which is not as strong as your sword, but is easier to deal "
           "damage with."
           "\nYou could also choose to be the evil Mugwump! You would have your Razor-Sharp Claws, Fangs of Death, and Healing powers."
+          "\nAdditionally, you could also be an Archer, a Wizard, or a Rogue. Each of them have their unique special attacks. Choose wisely."
           "\nLet the epic battle begin!")
 
 
 """
        This method handles the battle logic for the game.
-       @param warrior The Warrior of Light!
-       @param mugwump The Evil Mugwump!
        @return The name of the victor, or "none", if the battle is still raging on
      """
 
@@ -134,7 +133,7 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
     # determine who attacks first (Roll! For! Initiative!) and store the result
     cur_inititive = initiative() # this a 1 or 2
     # attack code
-    # If the Warrior attacks first
+    # If Player 1 attacks first
     if (cur_inititive == 1):
         # Player 1 attacks and assigns the resulting damage to Player 2
         print(f"{player_1_name} attacks first!")
@@ -143,31 +142,31 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
             damage = player_1.attack((cur_attack))
 
         if damage > 0:
-            player_2.takeDamage(damage) # apply damage to mugwump
+            player_2.takeDamage(damage) # apply damage to player 2
         else:
             player_1.takeDamage(damage)
         #if stealDamage != 0:
         #    player_1.takeDamage(stealDamage)
-        # Check if the Mugwump has been defeated
+        # Check if Player 2 has been defeated
         if (player_2.hitPoints <= 0):
             return player_1
-        # If not, Mugwump attacks!
+        # If not, Player 2 attacks!
         print(f"How is {player_2_selection} attacking?")
         attack_type = 0
         attack_type = player_2.aiAttack()
 
         damage = player_2.attack(attack_type)
-        # the mugwump may have healed itself, so have to check
+        # Player 2 may have healed itself, so have to check
         if(damage > 0):
             player_1.takeDamage(damage)
-        else:  #mugwump healed
+        else:  #Player 2 healed
             player_2.takeDamage(damage) #healing because it is negative
 
         #if stealDamage != 0:
         #    player_2.takeDamage(stealDamage)
 
         if (player_1.hitPoints == 0):
-            return player_2  #mugwump wins!
+            return player_2  #Player 2 wins!
     else: # Player_2 attacks first!
         print(f"{player_2_selection} attacks first!")
         # player_2 attacks and assigns the resulting damage to the player_1
@@ -180,37 +179,36 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
         # the mugwump may have healed itself, so have to check
         if (damage > 0):
             player_1.takeDamage(damage)
-        else:  # mugwump healed
+        else:  # Player 2 healed
             player_2.takeDamage(damage)  # healing because it is negative
         #if stealDamage != 0:
         #    player_2.takeDamage(stealDamage)
 
         if (player_1.hitPoints == 0):
-            return player_2  # mugwump wins!
+            return player_2  # Player 2 wins!
 
         if isinstance(player_1, GameProt):
             cur_attack = attackChoice(player_1)
             damage = player_1.attack((cur_attack))
 
         if damage > 0:
-            player_2.takeDamage(damage) # apply damage to mugwump
+            player_2.takeDamage(damage) # apply damage to Player 2
         else:
             player_1.takeDamage(damage)
         #if stealDamage != 0:
         #    player_1.takeDamage(stealDamage)
-        # Check if the Mugwump has been defeated
+        # Check if Player 2 has been defeated
         if (player_2.hitPoints <= 0):
             return player_1
 
 
-    # If neither combatant is defeated, the battle rages on!
+    # If neither player is defeated, the battle rages on!
     return "none"
 
 
 """
    This method reports the status of the combatants
-   @param warrior The Warrior of Light!
-   @param mugwump The Evil Mugwump!
+ 
  """
 def report(player_1, player_2, player_1_name, player_1_selection, player_2_selection):  # not testable
     print(f"{player_1_name} ({player_1_selection}) HP: {player_1.hitPoints}")
@@ -221,7 +219,6 @@ def report(player_1, player_2, player_1_name, player_1_selection, player_2_selec
 
 """
    This method asks the user what attack type they want to use and returns the result
-   @return 1 for sword, 2 for shield
  """
 
 
@@ -281,11 +278,11 @@ def createCharacter(playerSelection,playerName):
 
 """Determines which combatant attacks first and returns the result. In the case of a tie,
    re-roll.
-   @return 1 if the warrior goes first, 2 if the mugwump goes first
+   @return 1 if the warrior goes first, 2 if player 2 goes first
  """
 # this has randomness, how can we test it? Can we set a seed for the random number generator?
-def initiative() -> int: # return 1 for warrior, 2 for mugwump
-    # roll for initiative for both combatants
+def initiative() -> int: # return 1 for player 1, 2 for player 2
+    # roll for initiative for both players
     # until one initiative is greater than the other
     player_1_initiative = d10.roll()
     player_2_inititive = d10.roll()
@@ -312,7 +309,7 @@ def victory(victor, player_1, player_2):  # not testable (or at least we won't w
     if (victor == player_2):
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
-                print("You lost to the warrior. He mocks you for how pathetically you fought.")
+                print("You lost to the Warrior. He mocks you for how pathetically you fought.")
             elif isinstance(player_2, Mugwump):
                 print("You lost to the Mugwump! He mocks you for how pathetically you fought")
             elif isinstance(player_2, Archer):
