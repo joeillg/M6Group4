@@ -7,15 +7,21 @@
 """
 
 from die import Die
+import random
 class Warrior:
 
 
 
-    def __init__(self):  # for homework 4 #, aiController:bool):
+    def __init__(self,name):  # for homework 4 #, aiController:bool):
         self.d20 = Die(20)
         self.d10 = Die(10)
         self.d8 = Die(8)
         self.d4 = Die(4)
+        self.attackChoices = ["Trusty Sword", "Shield of Light"]
+        if name != "AI":
+            self.name = name
+        else:
+            self.name = "Warrior"
 
         # hitpoints, max is set
         # Warrior uses four d10 to calculate their starting Hit Points.
@@ -41,15 +47,15 @@ class Warrior:
         if (attack_type == 1): # trusty sword
             if (self.d20.roll() >= 12):  # do we hit?
                 damage = self.d8.roll() + self.d8.roll()  # 2d8 for damage
-                print(f"Warrior hit for {damage}")
+                print(f"{self.name} hit for {damage}")
             else:
-                print("Warrior misses!")
+                print(f"{self.name} misses!")
         else:  # (attack_type == 2): # shield of light
             if (self.d20.roll() >= 6): # do we hit
                 damage = self.d4.roll()  # 1d4 damage
-                print(f"Warrior hit for {damage}")
+                print(f"{self.name} hit for {damage}")
             else:
-                print("Warrior misses")
+                print(f"{self.name} misses")
 
 
         # return the damage
@@ -72,3 +78,14 @@ class Warrior:
     def setMaxHP(self, maxHP):
         self.maxHitPoints = maxHP
         self.hitPoints = self.maxHitPoints
+
+    def aiAttack(self):
+        attack = random.randint(1, 20)
+        if (attack <= 12):  # 60%
+            # Trusty Sword
+            attack_type = 1
+        else:  # 25%
+            # Shield of Light
+            attack_type = 2
+
+        return attack_type

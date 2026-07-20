@@ -7,16 +7,22 @@
 """
 
 from die import Die
+import random
 
 
 class Archer:
 
-    def __init__(self): # for homework 4 #, aiController:bool): # testable as well, range of hitpoints, and hitpoints == max hitpoints
+    def __init__(self,name): # for homework 4 #, aiController:bool): # testable as well, range of hitpoints, and hitpoints == max hitpoints
         self.d100 = Die(100)
         self.d20 = Die(20)
         self.d10 = Die(10)
         self.d6 = Die(6)
         self.focus = False
+        self.attackChoices = ["arrow","knife","potion","focus"]
+        if name != "AI":
+            self.name = name
+        else:
+            self.name = "Archer"
 
         # hitpoints, max is set
         # Archer uses four d10 to calculate their starting Hit Points.
@@ -37,51 +43,45 @@ class Archer:
         # roll attack die
         # determine results of attack
         damage = 0
-        if not self.focus:
-            if (attack_type == 1):
+        if (attack_type == 1):
+            if not self.focus:
                 if (self.d20.roll() >= 13):  # do we hit?
                     damage = self.d6.roll() + self.d6.roll()  # 2d6
-                    print(f"Archer hits with arrow for {damage}")
+                    print(f"{self.name} hits with arrow for {damage}")
                 else:
-                    print(f"Archer misses with arrow")
-
-            elif (attack_type == 2):
+                    print(f"{self.name} misses with arrow")
+            else:
+                damage = self.d6.roll() + self.d6.roll()
+                print(f"{self.name} hits with arrow for {damage}")
+                self.attackChoices = ["arrow", "knife", "potion", "focus"]
+                self.focus = False
+        elif (attack_type ==2):
+            if not self.focus:
                 if (self.d20.roll() >= 16):
                     damage = self.d6.roll() + self.d6.roll() + self.d6.roll()  # 3d6
-                    print(f"Archer hits with knife for {damage}")
+                    print(f"{self.name} hits with knife for {damage}")
                 else:
-                    print(f"Archer misses with knife")
-            elif (attack_type == 3):
-                self.focus = True
-                damage = 0
-                print(f"Archer is focusing")
+                    print(f"{self.name} misses with knife")
             else:
-                damage = -1 * self.d6.roll()
-                print(f"Archer heals for {-1*damage}")
-        else:
-            if (attack_type == 1):
-                damage = self.d6.roll() + self.d6.roll()  # 2d6
-                print(f"Archer hits with arrow for {damage}")
-                self.focus = False
-
-            elif (attack_type == 2):
                 damage = self.d6.roll() + self.d6.roll() + self.d6.roll()  # 3d6
-                print(f"Archer hits with knife for {damage}")
+                print(f"{self.name} hits with knife for {damage}")
+                self.attackChoices = ["arrow", "knife", "potion", "focus"]
                 self.focus = False
-            elif (attack_type == 3):
-                self.focus = True
-                damage = 0
-                print(f"Archer is focusing")
-            else:
-                damage = -1 * self.d6.roll()
-                print(f"Archer heals for {-1*damage}")
-                self.focus = False
-        # return the damage
+        elif (attack_type == 3):
+            damage = -1 * self.d6.roll()
+            print(f"{self.name} heals for {-1 * damage}")
+            self.attackChoices = ["arrow", "knife", "potion", "focus"]
+            self.focus = False
+        else:
+            self.focus = True
+            damage = 0
+            print(f"{self.name} is focusing")
+            self.attackChoices = ["arrow", "knife", "potion"]
         return damage # range looks like -6 ... 0 .. 18. maybe test this 100 times
 
     """
-       This method determines what action the Mugwump performs
-       @return 1 for a Claw attack, 2 for a Bite, and 3 if the Mugwump licks its wounds
+       This method determines what damage and action the Archer performs
+       @return damage based on attack choice
      """
 
     def takeDamage(self, amount: int): # testable, instructor provided example
@@ -100,3 +100,32 @@ class Archer:
     def setMaxHP(self, maxHP):
         self.maxHitPoints = maxHP
         self.hitPoints = self.maxHitPoints
+
+    def aiAttack(self):
+        if not self.focus:
+            attack = random.randint(1, 20)
+            if (attack <= 9):  # 45%
+                # Arrow
+                attack_type = 1
+            elif (attack <= 15):  # 30%
+                # Knife
+                attack_type = 2
+            elif (attack <= 18):  # 15%
+            # Focus
+                attack_type = 4
+            else:
+            # heal 10 %
+                attack_type = 3
+        else:
+            attack = random.randint(1, 20)
+            if (attack <= 11):  # 55%
+                # Arrow
+                attack_type = 1
+            elif (attack <= 15):  # 30%
+                # Knife
+                attack_type = 2
+            else:
+                # potion
+                attack_type = 3
+
+        return attack_type

@@ -13,6 +13,7 @@ from mugwump import Mugwump
 from warrior import Warrior
 from archer import Archer
 from rogue import Rogue
+from wizard import Wizard
 from die import Die
 import random
 import csv
@@ -31,7 +32,9 @@ import csv
 @runtime_checkable
 class GameProt(Protocol):
     def attack(self, attack_type:int) -> int:
-        return damage
+        damage:int
+        stealDamage:int
+        return damage, stealDamage
 
 d10 = Die(10)
 def main():  # not testable
@@ -51,45 +54,35 @@ def main():  # not testable
         #intro()
 
         # initialize game
-        # Initialize the Warrior and Mugwump classes, set the current victor to "none"
+        # Initialize the classes, set the current victor to "none"
         # change to player1 and player2, we ask the user what is what
 
 
 
         #selection of classes for players
+        characters = ["warrior","mugwump","archer","rogue","wizard"]
         print("Do you want to load a saved character? y/n")
         loadChar = input()
+        maxHP = 0
         if str.lower(loadChar) == "y":
             player_1_name, player_1_selection, maxHP = loadCharacter()
         else:
             maxHP = 0
             print("Enter name for Player 1")
             player_1_name = input()
-            print(f"Is {player_1_name} a Warrior, Archer, Rogue, or a Mugwump? Player 1 is human controlled.")
-            player_1_selection = input()
-        if str.lower(player_1_selection) == "warrior":
-            player_1 = Warrior()
-        elif str.lower(player_1_selection) == "mugwump":
-            player_1 = Mugwump()
-        elif str.lower(player_1_selection) == "archer":
-            player_1 = Archer()
-        elif str.lower(player_1_selection) == "rogue":
-            player_1 = Rogue()
+            print(f"Is {player_1_name} a Warrior, Archer, Rogue, Wizard or a Mugwump? Player 1 is human controlled.")
+            #player_1_selection = input()
+            player_1_selection = playerSelection(characters)
+        player_1 = createCharacter(player_1_selection,player_1_name)
 
         if maxHP != 0:
             player_1.setMaxHP(maxHP)
 
+        print("Is Player 2 a Warrior, Archer, Rogue, Wizard or a Mugwump? Player 2 is AI controlled.")
+        player_2_selection = playerSelection(characters)
+        player_2_name = "AI"
+        player_2 = createCharacter(player_2_selection,player_2_name)
 
-        print("Is Player 2 a Warrior, Archer, Rogue, or a Mugwump? Player 2 is AI controlled.")
-        player_2_selection = input()
-        if str.lower(player_2_selection) == "warrior":
-            player_2 = Warrior()
-        elif str.lower(player_2_selection) == "mugwump":
-            player_2 = Mugwump()
-        elif str.lower(player_2_selection) == "archer":
-            player_2 = Archer()
-        elif str.lower(player_2_selection) == "rogue":
-            player_2 = Rogue()
 
         victor = "none"
 
@@ -127,13 +120,12 @@ def intro():  # not testable
           "You would also have your Shield of Light, which is not as strong as your sword, but is easier to deal "
           "damage with."
           "\nYou could also choose to be the evil Mugwump! You would have your Razor-Sharp Claws, Fangs of Death, and Healing powers."
+          "\nAdditionally, you could also be an Archer, a Wizard, or a Rogue. Each of them have their unique special attacks. Choose wisely."
           "\nLet the epic battle begin!")
 
 
 """
        This method handles the battle logic for the game.
-       @param warrior The Warrior of Light!
-       @param mugwump The Evil Mugwump!
        @return The name of the victor, or "none", if the battle is still raging on
      """
 
@@ -141,176 +133,82 @@ def battle(player_1, player_2, player_1_name, player_2_selection):  # not testab
     # determine who attacks first (Roll! For! Initiative!) and store the result
     cur_inititive = initiative() # this a 1 or 2
     # attack code
-    # If the Warrior attacks first
+    # If Player 1 attacks first
     if (cur_inititive == 1):
         # Player 1 attacks and assigns the resulting damage to Player 2
         print(f"{player_1_name} attacks first!")
         if isinstance(player_1, GameProt):
-            if isinstance(player_1, Warrior):
-                cur_attack = attackChoiceWarrior()
-                damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            if isinstance(player_1, Mugwump):
-                cur_attack = attackChoiceMugwump()
-                damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            if isinstance(player_1, Archer):
-                cur_attack = attackChoiceArcher()
-                damage = player_1.attack((cur_attack)) #calculate damage caused by warrior
-            if isinstance(player_1, Rogue):
-                cur_attack = attackChoiceRogue()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-        player_2.takeDamage(damage) # apply damage to mugwump
-        # Check if the Mugwump has been defeated
+            cur_attack = attackChoice(player_1)
+            damage = player_1.attack((cur_attack))
+
+        if damage > 0:
+            player_2.takeDamage(damage) # apply damage to player 2
+        else:
+            player_1.takeDamage(damage)
+        #if stealDamage != 0:
+        #    player_1.takeDamage(stealDamage)
+        # Check if Player 2 has been defeated
         if (player_2.hitPoints <= 0):
             return player_1
-        # If not, Mugwump attacks!
+        # If not, Player 2 attacks!
         print(f"How is {player_2_selection} attacking?")
         attack_type = 0
-        if isinstance(player_2, GameProt):
-            if isinstance(player_2, Warrior):
-                attack =  random.randint(1,20)
-                if (attack <= 12):  # 60%
-                    # Trusty Sword
-                    attack_type = 1
-                else:  # 25%
-                    # Shield of Light
-                    attack_type = 2
-            if isinstance(player_2, Mugwump):
-                attack =  random.randint(1,20)
-                if (attack <= 12):  # 60%
-                    # Razor-Sharp Claws
-                    attack_type = 1
-                elif (attack <= 17):  # 25%
-                    # Their Fangs of Death
-                    attack_type = 2
-                else:
-                    # heal 15 %
-                    attack_type = 3
-            if isinstance(player_2, Archer):
-                attack =  random.randint(1,20)
-                if (attack <= 12):  # 48%
-                    # Arrow
-                    attack_type = 1
-                elif (attack <= 17):  # 20%
-                    # Knife
-                    attack_type = 2
-                elif (attack <= 22): #20%
-                    #Focus
-                    attack_type = 3
-                else:
-                    # heal 12 %
-                    attack_type = 4
-
-            if isinstance(player_2, Rogue):
-                attack =  random.randint(1,20)
-                if (attack <= 11):  # 50%
-                    # Quick Strike
-                    attack_type = 1
-                elif (attack <= 16):  # 30%
-                    # Backstab
-                    attack_type = 2
-                else: #20%
-                    # Steal
-                    attack_type = 3
+        attack_type = player_2.aiAttack()
 
         damage = player_2.attack(attack_type)
-        # the mugwump may have healed itself, so have to check
+        # Player 2 may have healed itself, so have to check
         if(damage > 0):
             player_1.takeDamage(damage)
-        else:  #mugwump healed
+        else:  #Player 2 healed
             player_2.takeDamage(damage) #healing because it is negative
 
+        #if stealDamage != 0:
+        #    player_2.takeDamage(stealDamage)
+
         if (player_1.hitPoints == 0):
-            return player_2  #mugwump wins!
+            return player_2  #Player 2 wins!
     else: # Player_2 attacks first!
         print(f"{player_2_selection} attacks first!")
         # player_2 attacks and assigns the resulting damage to the player_1
         print(f"How is {player_2_selection} attacking?")
         attack_type = 0
-        if isinstance(player_2, GameProt):
-            if isinstance(player_2, Warrior):
-                attack = random.randint(1, 20)
-                if (attack <= 12):  # 60%
-                    # Trusty Sword
-                    attack_type = 1
-                else:  # 25%
-                    # Shield of Light
-                    attack_type = 2
-            if isinstance(player_2, Mugwump):
-                attack = random.randint(1, 20)
-                if (attack <= 12):  # 60%
-                    # Razor-Sharp Claws
-                    attack_type = 1
-                elif (attack <= 17):  # 25%
-                    # Their Fangs of Death
-                    attack_type = 2
-                else:
-                    # heal 15 %
-                    attack_type = 3
-            if isinstance(player_2, Archer):
-                attack = random.randint(1, 25)
-                if (attack <= 12):  # 48%
-                    # Arrow
-                    attack_type = 1
-                elif (attack <= 17):  # 20%
-                    # Knife
-                    attack_type = 2
-                elif (attack <= 22): # 20%
-                    # Focus
-                    attack_type = 3
-                else:
-                    # heal 12 %
-                    attack_type = 4
-
-            if isinstance(player_2, Rogue):
-                attack = random.randint(1, 20)
-                if (attack <= 10):  # 50%
-                    # Quick Strike
-                    attack_type = 1
-                elif (attack <= 14):  # 30%
-                    # Backstab
-                    attack_type = 2
-                else: #20%
-                    # Steal
-                    attack_type = 3
+        #if isinstance(player_2, GameProt):
+        attack_type = player_2.aiAttack()
 
         damage = player_2.attack(attack_type)
         # the mugwump may have healed itself, so have to check
         if (damage > 0):
             player_1.takeDamage(damage)
-        else:  # mugwump healed
+        else:  # Player 2 healed
             player_2.takeDamage(damage)  # healing because it is negative
+        #if stealDamage != 0:
+        #    player_2.takeDamage(stealDamage)
 
         if (player_1.hitPoints == 0):
-            return player_2  # mugwump wins!
+            return player_2  # Player 2 wins!
 
         if isinstance(player_1, GameProt):
-            if isinstance(player_1, Warrior):
-                cur_attack = attackChoiceWarrior()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            if isinstance(player_1, Mugwump):
-                cur_attack = attackChoiceMugwump()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            if isinstance(player_1, Archer):
-                cur_attack = attackChoiceArcher()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
-            if isinstance(player_1, Rogue):
-                cur_attack = attackChoiceRogue()
-                damage = player_1.attack((cur_attack))  # calculate damage caused by warrior
+            cur_attack = attackChoice(player_1)
+            damage = player_1.attack((cur_attack))
 
-        player_2.takeDamage(damage)  # apply damage to mugwump
-        # Check if the Mugwump has been defeated
+        if damage > 0:
+            player_2.takeDamage(damage) # apply damage to Player 2
+        else:
+            player_1.takeDamage(damage)
+        #if stealDamage != 0:
+        #    player_1.takeDamage(stealDamage)
+        # Check if Player 2 has been defeated
         if (player_2.hitPoints <= 0):
             return player_1
 
 
-    # If neither combatant is defeated, the battle rages on!
+    # If neither player is defeated, the battle rages on!
     return "none"
 
 
 """
    This method reports the status of the combatants
-   @param warrior The Warrior of Light!
-   @param mugwump The Evil Mugwump!
+ 
  """
 def report(player_1, player_2, player_1_name, player_1_selection, player_2_selection):  # not testable
     print(f"{player_1_name} ({player_1_selection}) HP: {player_1.hitPoints}")
@@ -321,59 +219,70 @@ def report(player_1, player_2, player_1_name, player_1_selection, player_2_selec
 
 """
    This method asks the user what attack type they want to use and returns the result
-   @return 1 for sword, 2 for shield
  """
-def attackChoiceWarrior() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
 
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Your Trusty Sword\n"
-                        "2. Your Shield of Light\n"
-                        "Enter choice: "))
-    return choice
 
-def attackChoiceMugwump() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
+""" This function allows Player 1 to select their attack"""
+def attackChoice(player):
+    stillNeedInput = True
+    print("How would you like to attack?\n")
+    totalChoices = len(player.attackChoices)
+    for i in range(totalChoices):
+        i = i+1
+        print(f"{i}. {player.attackChoices[i-1]}")
+                        #"1. Your Bow and Arrow\n"
+                        #"2. Your Knife\n"
+                        #"3. Focus (Next Attack can't miss)\n"
+                        #"4. A Potion\n"
+                        #"Enter choice: "))
+    while stillNeedInput:
+         try:
+             x = int(input())
+             if x > 0 and x <= totalChoices:
+                stillNeedInput = False
+             else:
+                 print("Please enter a valid choice")
+         except ValueError:
+             print("Please enter a valid choice")
+    return x
 
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Your Claws\n"
-                        "2. Your Fangs\n"
-                        "3. Your Healing Powers\n"
-                        "Enter choice: "))
-    return choice
+"""Function can be called for player selection for players 1 and 2"""
+def playerSelection(characters):
+    stillNeedChoice = False
+    while stillNeedChoice == False:
+        player_selection = input()
+        for character in characters:
+            if str.lower(player_selection) == character or stillNeedChoice == True:
+                stillNeedChoice = True
+            else:
+                stillNeedChoice = False
+        if stillNeedChoice == False:
+            print("Not a valid character. Please enter a valid character.")
 
-def attackChoiceArcher() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
+    return player_selection
 
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Your Bow and Arrow\n"
-                        "2. Your Knife\n"  
-                        "3. Focus (Next Attack can't miss)\n"
-                        "4. A Potion\n"
-                        "Enter choice: "))
-    return choice
 
-def attackChoiceRogue() -> int: # this should be testable, see https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
-    # this may need to change, probably needs to move into mugwump and warrior
-    # mugwump already has ai, but when controlled human will need something like this
-
-    choice = int(input( "How would you like to attack?\n"
-                        "1. Quick strike\n"
-                        "2. Backstab\n"  
-                        "3. Steal (heal for half the damage dealt)\n"
-                        "Enter choice: "))
-    return choice
+"""Creates the character based on the player selection that is passed to it"""
+def createCharacter(playerSelection,playerName):
+    if str.lower(playerSelection) == "warrior":
+        player = Warrior(playerName)
+    elif str.lower(playerSelection) == "mugwump":
+        player = Mugwump(playerName)
+    elif str.lower(playerSelection) == "archer":
+        player = Archer(playerName)
+    elif str.lower(playerSelection) == "rogue":
+        player = Rogue(playerName)
+    elif str.lower(playerSelection) == "wizard":
+        player = Wizard(playerName)
+    return player
 
 """Determines which combatant attacks first and returns the result. In the case of a tie,
    re-roll.
-   @return 1 if the warrior goes first, 2 if the mugwump goes first
+   @return 1 if the warrior goes first, 2 if player 2 goes first
  """
 # this has randomness, how can we test it? Can we set a seed for the random number generator?
-def initiative() -> int: # return 1 for warrior, 2 for mugwump
-    # roll for initiative for both combatants
+def initiative() -> int: # return 1 for player 1, 2 for player 2
+    # roll for initiative for both players
     # until one initiative is greater than the other
     player_1_initiative = d10.roll()
     player_2_inititive = d10.roll()
@@ -395,20 +304,20 @@ def initiative() -> int: # return 1 for warrior, 2 for mugwump
 def victory(victor, player_1, player_2):  # not testable (or at least we won't worry about testing it)
     if (victor == player_1):
         if isinstance(player_1, GameProt):
-            if isinstance(player_1, Warrior):
-                print("You won! Let's mock Player 2 for how pathetically he fought you.")
-            elif isinstance(player_1, Mugwump):
-                print("You won! Let's mock Player 2 for how pathetically he fought you.")
-            elif isinstance(player_1, Archer):
-                print("You won! Let's mock Player 2 for how pathetically he fought you.")
+            print("You won! Let's mock Player 2 for how pathetically he fought you.")
+
     if (victor == player_2):
         if isinstance(player_2, GameProt):
             if isinstance(player_2, Warrior):
-                print("You lost to the warrior. He mocks you for how pathetically you fought.")
+                print("You lost to the Warrior. He mocks you for how pathetically you fought.")
             elif isinstance(player_2, Mugwump):
                 print("You lost to the Mugwump! He mocks you for how pathetically you fought")
             elif isinstance(player_2, Archer):
                 print("You lost to the Archer! He mocks you for how pathetically you fought.")
+            elif isinstance(player_2, Rogue):
+                print("You lost to the Rogue! He mocks you for how pathetically you fought.")
+            elif isinstance(player_2, Wizard):
+                print("You lost to the Wizard! He mocks you for how pathetically you fought.")
 
 
 """
@@ -455,6 +364,7 @@ def loadCharacter():
         charName = characters[charSelect][0]
         charClass = characters[charSelect][1]
         charHP = int(characters[charSelect][2])
+        print(f"You selected {charName} a {charClass} with {charHP} max hit points.")
         return charName, charClass, charHP
 if __name__ == "__main__":
     main()
